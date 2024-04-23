@@ -1,0 +1,37 @@
+<html lang="pt-BR"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Online</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js" integrity="sha512-11t8Q+vY9JlCrr+PveZKTYJq8n7O09Y5X/pk/aMd3vJugSvu4xOunGEUzaADqL3I8cZKE/pBwwCfXzDkRJh2sQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js" integrity="sha512-jGsMH83oKe9asCpkOVkBnUrDDTp8wl+adkB2D+//JtlxO4SrLoJdhbOysIFQJloQFD+C4Fl1rMsQZF76JjV0eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var socket = io.connect("http://192.168.10.89:5000")
+            socket.on('connect', function(){
+                socket.send("User connected");
+            });
+
+            socket.on('message', function(data){
+                $('#messages').append($('<p>').text(data));
+            });
+
+            $('#sendBtn').on('click', function(){
+                socket.send($('#username').val() + ': ' + $('#message').val() ); 
+                $('#message').val('');
+            
+                
+            });
+
+        })
+    </script>
+    <div id="messages">
+
+    </div>
+    <input type="text" id="username" placeholder="Username" required="">
+    <input type="text" id="message" placeholder="Message" required="">
+    <button id="sendBtn">Send</button>
+
+</body></html>
